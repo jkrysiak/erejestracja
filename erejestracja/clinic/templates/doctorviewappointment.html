@@ -81,14 +81,14 @@
                                         <td>{{i.symptoms}}</td>
                                     </tr> 
                                     <tr>
-                                        <td>Wystaw recepte</td>
+                                        <td>Zalecenia</td>
                                         <form method="post">
                                             <td>{% csrf_token %}
-                                                <textarea class="form-control" name="prescription"></textarea>
-                                                <input type="hidden" value="{{i.id}}" name="idofappointment">
+                                                <textarea class="form-control" name="exam"></textarea>
+                                                <input type="hidden" value="{{i.id}}" name="idof">
                                             </td>
                                             <td>
-                                                <input type="submit" class="btn-danger" value="Wystaw recepte" name="">
+                                                <input type="submit" class="btn-danger" value="Autoryzuj" name="">
                                             </td>
                                         </form>
                                     </tr>
@@ -131,8 +131,8 @@
                                         <td>{{j.symptoms}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Recepty:</td>
-                                        <td>{{j.prescription}}</td>
+                                        <td>Zalecenia:</td>
+                                        <td>{{j.exam}}</td>
                                     </tr>
                                 </table>
                             </div>

@@ -108,7 +108,7 @@ def MakeAppoitments(request):
         appoitmenttime = request.POST['appoitmenttime']
         symptoms = request.POST['symptoms']
         try:
-            Appoitment.objects.create(doctorname=doctorname,doctoremail=doctoremail,patientname=patientname,patientemail=patientemail,appoitmentdate=appoitmentdate,appoitmenttime=appoitmenttime,symptoms=symptoms,status=True,prescription="")
+            Appoitment.objects.create(doctorname=doctorname,doctoremail=doctoremail,patientname=patientname,patientemail=patientemail,appoitmentdate=appoitmentdate,appoitmenttime=appoitmenttime,symptoms=symptoms,status=True,exam="")
             error='no'
         except Exception as e:
             error='yes'
@@ -125,16 +125,16 @@ def viewappoitments(request):
 
     g = request.user.groups.all()[0].name
     if g == 'Patient':
-        upcomming_appoitments = Appoitment.objects.filter(patientemail=request.user,appoitmentdate__gte=timezone.now()).order_by('appoitmentdate')
+        upcomming_appoitments = Appoitment.objects.filter(patientemail=request.user,appoitmentdate__gte=timezone.now(),status=True).order_by('appoitmentdate')
         previous_appoitments = Appoitment.objects.filter(patientemail=request.user,appoitmentdate__lt=timezone.now()).order_by('-appoitmentdate') | Appoitment.objects.filter(patientemail=request.user,status=False).order_by('-appoitmentdate')
         d = {'upcomming_appoitments':upcomming_appoitments,'previous_appoitments':previous_appoitments}
         return render(request,'patientviewappointments.html',d)
     if g == 'Doctor':
-        if request == 'POST':
-            prescriptiondata = request.POST['prescription']
-            idvalue = request.POST['idofappointment']
-            Appoitment.objects.filter(id=idvalue).update(prescription=prescriptiondata,status=False)
-        upcomming_appoitments = Appoitment.objects.filter(doctoremail=request.user,appoitmentdate__gte=timezone.now()).order_by('appoitmentdate')
+        if request.method == 'POST':
+            examdata = request.POST['exam']
+            idvalue = request.POST['idof']
+            Appoitment.objects.filter(id=idvalue).update(exam=examdata,status=False)
+        upcomming_appoitments = Appoitment.objects.filter(doctoremail=request.user,appoitmentdate__gte=timezone.now(),status=True).order_by('appoitmentdate')
         previous_appoitments = Appoitment.objects.filter(doctoremail=request.user,appoitmentdate__lt=timezone.now()).order_by('-appoitmentdate') | Appoitment.objects.filter(doctoremail=request.user,status=False).order_by('-appoitmentdate')
         d = {'upcomming_appoitments':upcomming_appoitments,'previous_appoitments':previous_appoitments}
         return render(request,'doctorviewappointment.html',d)

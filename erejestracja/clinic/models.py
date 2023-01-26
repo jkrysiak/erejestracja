@@ -34,7 +34,7 @@ class Appoitment(models.Model):
     appoitmentdate = models.DateField()
     appoitmenttime = models.TimeField()
     symptoms = models.CharField(max_length=100)
-    prescription = models.CharField(max_length=200)
+    exam = models.CharField(max_length=200)
     status = models.BooleanField()
 
     def __str__ (self):
